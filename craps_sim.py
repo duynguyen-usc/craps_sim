@@ -1,4 +1,5 @@
 import random
+from types import SimpleNamespace
 
 def rollDice(num, wager):
 	DICE_MIN = 1
@@ -29,8 +30,8 @@ bankRoll = 10000
 selectedNum = 6
 wager = 108
 
-for x in range(1, 100):
-	betOutcome = rollDice(selectedNum, wager)
-	bankRoll = bankRoll + betOutcome['payout']
+for x in range(1,1000):
+	betOutcome = SimpleNamespace(**rollDice(selectedNum, wager))
+	bankRoll = bankRoll + betOutcome.payout
 
 print(bankRoll)
