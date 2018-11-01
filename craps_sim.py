@@ -24,20 +24,26 @@ def getPayout(diceOutcome, selectedNum, wager):
 	else:
 		return 0
 	
-
 def playGame(selectedNum, startingBet):
-	bet = roundDown(startingBet, getBetMultiplier(selectedNum))
 	gamePL = 0
 	rollResult = 0
 	breakEven = 0
+	nextBetBrokeEven = False
+
+	bet = roundDown(startingBet, getBetMultiplier(selectedNum))
+
 	while rollResult != 7:
 		win = 0
 		rollResult = rollDice()
 		gamePL += getPayout(rollResult, selectedNum, bet)
 		if(rollResult == selectedNum):
 			if(breakEven >= startingBet):
-				nextBet = bet * 1.5
-				bet = roundDown(nextBet, getBetMultiplier(selectedNum))
+				if(nextBetBrokeEven == True):
+					nextBet = bet * 1.5
+					bet = roundDown(nextBet, getBetMultiplier(selectedNum))
+					nextBetBrokeEven = False
+				else:
+					nextBetBrokeEven = True
 			else:
 				breakEven += gamePL
 				gamePL = 0
@@ -53,11 +59,11 @@ def getBetMultiplier(n):
 		return 5
 
 bankRoll = 1000
-startBet = 100
-tries = 100
+startBet = 108
+tries = 8
 for i in range(1, tries):
 	if (bankRoll >= startBet):
-		pL = playGame(4, startBet)
+		pL = playGame(6, startBet)
 		print("game: {}".format(pL))
 		bankRoll = bankRoll + pL
 print("final bankroll: {}".format(bankRoll))
