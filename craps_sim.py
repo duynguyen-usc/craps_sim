@@ -33,10 +33,11 @@ def playGame(selectedNum, startingBet):
 		win = 0
 		print(bet)
 		rollResult = rollDice()
-		gamePL = getPayout(rollResult, selectedNum, bet)
+		gamePL += getPayout(rollResult, selectedNum, bet)
 		if(rollResult == selectedNum):
 			print('winner!')
-			bet = roundDown(bet * 1.5, 6)
+			nextBet = bet * 1.5
+			bet = roundDown(nextBet, getBetMultiplier(selectedNum))
 		elif(rollResult ==7):
 			print('loser!')
 	return gamePL
@@ -44,8 +45,11 @@ def playGame(selectedNum, startingBet):
 def roundDown(n, divisor):
 	return n - (n % divisor)
 
-
-
+def getBetMultiplier(n):
+	if (n == 6 or n == 8):
+		return 6
+	else: 
+		return 5
 
 bankRoll = 1000
 for i in range(1, 10):
