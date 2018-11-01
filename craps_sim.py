@@ -27,21 +27,30 @@ def getPayout(diceOutcome, selectedNum, wager):
 
 def playGame(selectedNum, startingBet):
 	bet = startingBet
-	totalPL = 0
+	gamePL = 0
+	rollResult = 0
 	while rollResult != 7:
+		win = 0
+		print(bet)
 		rollResult = rollDice()
-		totalPL += getPayout(rollResult, selectedNum, bet)
+		gamePL = getPayout(rollResult, selectedNum, bet)
 		if(rollResult == selectedNum):
-			bet =  bet * 1.5
+			print('winner!')
+			bet = roundDown(bet * 1.5, 6)
+		elif(rollResult ==7):
+			print('loser!')
+	return gamePL
 
-	return totalPL
+def roundDown(n, divisor):
+	return n - (n % divisor)
+
 
 
 
 bankRoll = 1000
 for i in range(1, 10):
-	pL = playGame(bankRoll, 6, 108)
-	print(pL)
+	pL = playGame(6, 108)
+	print("game={}".format(pL))
 	bankRoll = bankRoll + pL
 
-print bankRoll
+print("final bankroll = {}".format(bankRoll))
